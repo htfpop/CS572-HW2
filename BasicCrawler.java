@@ -39,7 +39,7 @@ public class BasicCrawler extends WebCrawler {
         }
 
         // only do pages in our course site
-        return href.startsWith("https://bytes.usc.edu/cs572/s23-sear-chhh");
+        return href.startsWith("https://www.usatoday.com") || href.startsWith("http://www.usatoday.com") ;
     }
 
     /**
@@ -70,9 +70,9 @@ public class BasicCrawler extends WebCrawler {
             String html = htmlParseData.getHtml();
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
-            /*logger.debug("Text length: {}", text.length());
+            logger.debug("Text length: {}", text.length());
             logger.debug("Html length: {}", html.length());
-            logger.debug("Number of outgoing links: {}", links.size());*/
+            logger.debug("Number of outgoing links: {}", links.size());
         }
 
         Header[] responseHeaders = page.getFetchResponseHeaders();

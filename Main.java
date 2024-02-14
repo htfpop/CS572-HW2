@@ -1,11 +1,3 @@
-
-// simple web-crawling demo :)
-/*
-A mashup of code in the wild (eg. from the crawler4j repo etc.) and a bit of my own...
-
-This is a minimal example, comprised of just 2 source files, 2 libs/ .jar files...
-*/
-
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -27,21 +19,16 @@ public class Main {
         // Otherwise it may overload the target servers.
         config.setPolitenessDelay(1000);
 
-        // You can set the maximum crawl depth here. The default value is -1 for unlimited depth.
-        config.setMaxDepthOfCrawling(4);
+        // You can set the maximum crawl depth here.
+        // CSCI-572: maximum depth should be set to 16 to ensure that we limit the crawling
+        config.setMaxDepthOfCrawling(16);
 
         // You can set the maximum number of pages to crawl. The default value is -1 for unlimited number of pages.
-        config.setMaxPagesToFetch(1000);
+        // CSCI-572: should be set to 20,000 to ensure a reasonable execution time for this exercise
+        config.setMaxPagesToFetch(20000);
 
         // Should binary data should also be crawled? example: the contents of pdf, or the metadata of images etc
         config.setIncludeBinaryContentInCrawling(false);
-
-        // Do you need to set a proxy? If so, you can use:
-        // config.setProxyHost("proxyserver.example.com");
-        // config.setProxyPort(8080);
-
-        // If your proxy also needs authentication:
-        // config.setProxyUsername(username); config.getProxyPassword(password);
 
         // This config parameter can be used to set your crawl to be resumable
         // (meaning that you can resume the crawl from a previously
@@ -63,14 +50,19 @@ public class Main {
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
 
-        // STARTER 'seed'      
-        controller.addSeed("https://bytes.usc.edu/cs572/s23-sear-chhh");
+        // STARTER 'seed'
+        //controller.addSeed("https://bytes.usc.edu/cs572/s23-sear-chhh");
+        controller.addSeed("https://www.usatoday.com");
+        controller.addSeed("https://www.usatoday.com/news/nation/");
+        controller.addSeed("https://www.usatoday.com/elections/");
+        controller.addSeed("https://www.usatoday.com/sports/");
+        controller.addSeed("https://www.usatoday.com/entertainment/");
 
 
         // Number of threads to use during crawling. Increasing this typically makes crawling faster. But crawling
         // speed depends on many other factors as well. You can experiment with this to figure out what number of
         // threads works best for you.
-        int numberOfCrawlers = 6;
+        int numberOfCrawlers = 10;
 
         // To demonstrate an example of how you can pass objects to crawlers, we use an AtomicInteger that crawlers
         // increment whenever they see a url which points to an image.
@@ -78,7 +70,6 @@ public class Main {
 
         // Start the crawl. This is a blocking operation, meaning that your code
         // will reach the line after this only when crawling is finished.
-        //controller.start(factory, numberOfCrawlers);
         // GO!!!!
         controller.start(BasicCrawler.class, numberOfCrawlers);
 
