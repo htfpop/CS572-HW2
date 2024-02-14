@@ -1,0 +1,1 @@
+14:56:57 WARN  [Crawler 1] - [WebCrawler]- Skipping URL: https://www.usatoday.com/tech/internet/_next/static/css/5833426c4da1c8f7.css, StatusCode: 404, text/html; charset=utf-8, Not Found

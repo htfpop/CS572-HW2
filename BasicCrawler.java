@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 // -need- to implement visit() and shouldVisit()
 public class BasicCrawler extends WebCrawler {
 
-    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|EXE|GIF|MP3)$");
+    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|css|JS|js|EXE|GIF|MP3)$");
 
     //private static final Pattern ALLOWED = Pattern.compile(".*(JPG|jpg|PNG|png|JPEG|jpeg|PDF|pdf|DOC|doc|HTML|html|HTM|htm)");
     CrawlStat myCrawlStat;
