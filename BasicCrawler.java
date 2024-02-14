@@ -57,7 +57,10 @@ public class BasicCrawler extends WebCrawler {
             if (responseHeaders != null) {
                 String content = String.valueOf(responseHeaders[1]);
                 //return ALLOWED.matcher(content).matches();
-                return content.contains("text") || content.contains("image");
+                return content.contains("text/html") ||
+                        content.contains("image/jpeg") || content.contains("image/png") ||
+                        content.contains("application/pdf") ||
+                        content.contains("doc");
             }
         }
 

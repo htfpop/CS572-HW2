@@ -28,7 +28,7 @@ public class Main {
 
         // You can set the maximum number of pages to crawl. The default value is -1 for unlimited number of pages.
         // CSCI-572: should be set to 20,000 to ensure a reasonable execution time for this exercise
-        config.setMaxPagesToFetch(10000);
+        config.setMaxPagesToFetch(20000);
 
         // Should binary data should also be crawled? example: the contents of pdf, or the metadata of images etc
         config.setIncludeBinaryContentInCrawling(true);
@@ -56,10 +56,6 @@ public class Main {
         // STARTER 'seed'
         //controller.addSeed("https://bytes.usc.edu/cs572/s23-sear-chhh");
         controller.addSeed("https://www.usatoday.com");
-        controller.addSeed("https://www.usatoday.com/news/nation/");
-        controller.addSeed("https://www.usatoday.com/elections/");
-        controller.addSeed("https://www.usatoday.com/sports/");
-        controller.addSeed("https://www.usatoday.com/entertainment/");
 
 
         // Number of threads to use during crawling. Increasing this typically makes crawling faster. But crawling
