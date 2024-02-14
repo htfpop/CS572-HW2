@@ -28,10 +28,10 @@ public class Main {
 
         // You can set the maximum number of pages to crawl. The default value is -1 for unlimited number of pages.
         // CSCI-572: should be set to 20,000 to ensure a reasonable execution time for this exercise
-        config.setMaxPagesToFetch(1000);
+        config.setMaxPagesToFetch(10000);
 
         // Should binary data should also be crawled? example: the contents of pdf, or the metadata of images etc
-        config.setIncludeBinaryContentInCrawling(false);
+        config.setIncludeBinaryContentInCrawling(true);
 
         // This config parameter can be used to set your crawl to be resumable
         // (meaning that you can resume the crawl from a previously

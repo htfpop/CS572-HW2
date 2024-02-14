@@ -13,7 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 // -need- to implement visit() and shouldVisit()
 public class BasicCrawler extends WebCrawler {
 
-    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|jpg|png|CSS|EXE|GIF|JPEG|MP3|PDF)$");
+    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|EXE|GIF|MP3)$");
+
+    //private static final Pattern ALLOWED = Pattern.compile(".*(JPG|jpg|PNG|png|JPEG|jpeg|PDF|pdf|DOC|doc|HTML|html|HTM|htm)");
     CrawlStat myCrawlStat;
 
     //private final AtomicInteger numPagesSeen;
@@ -49,8 +51,20 @@ public class BasicCrawler extends WebCrawler {
             return false;
         }
 
+        Header[] responseHeaders = referringPage.getFetchResponseHeaders();
+        if(href.startsWith("https://www.usatoday.com") || href.startsWith("http://www.usatoday.com") )
+        {
+            if (responseHeaders != null) {
+                String content = String.valueOf(responseHeaders[1]);
+                //return ALLOWED.matcher(content).matches();
+                return content.contains("text") || content.contains("image");
+            }
+        }
+
+        return false;
+
         // only do pages in our course site
-        return href.startsWith("https://www.usatoday.com") || href.startsWith("http://www.usatoday.com") ;
+        //return href.startsWith("https://www.usatoday.com") || href.startsWith("http://www.usatoday.com") || ALLOWED.matcher(href).matches();
     }
 
     /**
@@ -154,7 +168,7 @@ public class BasicCrawler extends WebCrawler {
         String file = "Thread"+getMyId()+"_log.txt";
 
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter("logs\\" + file));
+            PrintWriter pw = new PrintWriter(new FileWriter("logs\\" + file, true));
             int stackSize = myCrawlStat.stackSize();
             for(int i = 0; i < stackSize ; i++)
             {
