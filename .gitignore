@@ -3,6 +3,9 @@
 
 .idea
 out
+results
+
+*iml
 
 # Log file
 *.log
