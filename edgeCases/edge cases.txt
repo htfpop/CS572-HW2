@@ -1,1 +1,62 @@
 14:56:57 WARN  [Crawler 1] - [WebCrawler]- Skipping URL: https://www.usatoday.com/tech/internet/_next/static/css/5833426c4da1c8f7.css, StatusCode: 404, text/html; charset=utf-8, Not Found
+
+
+Mac
+16:23:15 INFO  [Thread-0] - [CrawlController]- It looks like no thread is working, waiting for 10 seconds to make sure...
+16:23:25 INFO  [Thread-0] - [CrawlController]- No thread is working and no more URLs are in queue waiting for another 10 seconds to make sure...
+16:23:35 INFO  [Thread-0] - [CrawlController]- All of the crawlers are stopped. Finishing the process...
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 1 > Processed Pages: 649
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 1 > Total Links Found: 124505
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 1 > Total Text Size: 8527528
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 2 > Processed Pages: 620
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 2 > Total Links Found: 117233
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 2 > Total Text Size: 6401226
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 3 > Processed Pages: 628
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 3 > Total Links Found: 100235
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 3 > Total Text Size: 8765441
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 4 > Processed Pages: 586
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 4 > Total Links Found: 105302
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 4 > Total Text Size: 5060862
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 5 > Processed Pages: 641
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 5 > Total Links Found: 114812
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 5 > Total Text Size: 8166673
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 6 > Processed Pages: 647
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 6 > Total Links Found: 125384
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 6 > Total Text Size: 7647504
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 7 > Processed Pages: 599
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 7 > Total Links Found: 114274
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 7 > Total Text Size: 8635952
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 8 > Processed Pages: 578
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 8 > Total Links Found: 123063
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 8 > Total Text Size: 11179010
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 9 > Processed Pages: 442
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 9 > Total Links Found: 88738
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 9 > Total Text Size: 6000073
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 10 > Processed Pages: 606
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 10 > Total Links Found: 124408
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 10 > Total Text Size: 6642526
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 11 > Processed Pages: 648
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 11 > Total Links Found: 127139
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 11 > Total Text Size: 10875979
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 12 > Processed Pages: 572
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 12 > Total Links Found: 105531
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 12 > Total Text Size: 9363825
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 13 > Processed Pages: 593
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 13 > Total Links Found: 119046
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 13 > Total Text Size: 5235164
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 14 > Processed Pages: 643
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 14 > Total Links Found: 147518
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 14 > Total Text Size: 7732571
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 15 > Processed Pages: 645
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 15 > Total Links Found: 119373
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 15 > Total Text Size: 9042830
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 16 > Processed Pages: 606
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 16 > Total Links Found: 109373
+16:23:35 INFO  [Thread-0] - [WebCrawler]- Crawler 16 > Total Text Size: 8783881
+16:23:35 INFO  [Thread-0] - [CrawlController]- Waiting for 10 seconds before final clean up...
+Aggregated Statistics:
+	Processed Pages: {9703}
+	Total Links found: {1865934}
+	Total Text Size: {128061045}
+	Total Time 134 min 44 s
+	Total s 8084276239373
