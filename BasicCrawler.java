@@ -45,8 +45,13 @@ public class BasicCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
+        if (referringPage.isRedirect()) {
+            logger.warn(String.format("Redirected link - %s",href));
+        }
+
         // Ignore the url if it has an extension that matches our defined set of image extensions.
         if (IMAGE_EXTENSIONS.matcher(href).matches()) {
+            logger.warn(String.format("No visit since pattern matched not allowed - %s",href));
             //numSeenImages.incrementAndGet();
             return false;
         }
@@ -63,7 +68,12 @@ public class BasicCrawler extends WebCrawler {
                         content.contains("doc");
             }
         }
+        else {
+            logger.warn(String.format("Does not start with valid domain - %s",href));
+            return false;
+        }
 
+        logger.warn(String.format("No Visit / no match at all - %s",href));
         return false;
 
         // only do pages in our course site
