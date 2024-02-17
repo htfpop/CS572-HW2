@@ -132,8 +132,7 @@ public class BasicCrawler extends WebCrawler {
                 String contentType = page.getContentType();
 
                 // Primary Binary Filter
-                if (contentType.contains("text/html") || contentType.contains("image/jpeg") ||
-                        contentType.contains("image/png") || contentType.contains("image/gif") ||
+                if (contentType.contains("text/html") || contentType.contains("image") ||
                         contentType.contains("application/pdf") || contentType.contains("doc") )
                 {
                     int outlinks = page.getParseData().getOutgoingUrls().size();

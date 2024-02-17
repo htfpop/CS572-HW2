@@ -33,7 +33,7 @@ public class Main {
 
         // You can set the maximum number of pages to crawl. The default value is -1 for unlimited number of pages.
         // CSCI-572: should be set to 20,000 to ensure a reasonable execution time for this exercise
-        config.setMaxPagesToFetch(1000);
+        config.setMaxPagesToFetch(20000);
 
         // Should binary data should also be crawled? example: the contents of pdf, or the metadata of images etc
         config.setIncludeBinaryContentInCrawling(true);
@@ -87,6 +87,9 @@ public class Main {
         hdr = new String[]{"URL", "Indicator"};
         write2csv("urls", hdr);
 
+        hdr = new String[]{"URL", "Type"};
+        write2csv("NULL", hdr);
+
         long elapsed = System.nanoTime();
         controller.start(BasicCrawler.class, numberOfCrawlers);
         elapsed = System.nanoTime() - elapsed;
@@ -129,7 +132,7 @@ public class Main {
             case "fetch" -> "logs\\fetch_usatoday.csv";
             case "visit" -> "logs\\visit_usatoday.csv";
             case "urls" -> "logs\\urls_usatoday.csv";
-            default -> "UNDEFINED.csv";
+            default -> "logs\\UNDETERMINED.csv";
         };
 
         CSVWriter csv = new CSVWriter(new FileWriter(outfile, false));
