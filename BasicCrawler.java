@@ -83,14 +83,15 @@ public class BasicCrawler extends WebCrawler {
         String parentUrl = page.getWebURL().getParentUrl();
         String anchor = page.getWebURL().getAnchor();
         int statusCode = page.getStatusCode();
+        String[] out;
 
-        //CSCI-572: The URLs it attempts to fetch s: "URL;status"
-        String[] out = new String[]{url, String.valueOf(statusCode)};
-        try {
-            write2csv("fetch", out);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        //CSCI-572: The URLs it attempts to fetch s: "URL;status"
+//        String[] out = new String[]{url, String.valueOf(statusCode)};
+//        try {
+//            write2csv("fetch", out);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         //Downloading
         // Success (2XX)
@@ -247,10 +248,10 @@ public class BasicCrawler extends WebCrawler {
 
     public void write2csv(String csvType, String[] write) throws IOException {
         String outfile = switch (csvType) {
-            case "fetch" -> "logs\\fetch_usatoday.csv";
-            case "visit" -> "logs\\visit_usatoday.csv";
-            case "urls" -> "logs\\urls_usatoday.csv";
-            default -> "logs\\UNDETERMINED.csv";
+            case "fetch" -> "logs/fetch_usatoday.csv";
+            case "visit" -> "logs/visit_usatoday.csv";
+            case "urls" -> "logs/urls_usatoday.csv";
+            default -> "logs/UNDETERMINED.csv";
         };
 
         CSVWriter csv = new CSVWriter(new FileWriter(outfile, true));
@@ -291,6 +292,18 @@ public class BasicCrawler extends WebCrawler {
         else
         {
             myCrawlStat.incTotalFailedOrAborted();
+        }
+    }
+
+    @Override
+    protected void handlePageStatusCode(WebURL webUrl, int statusCode, String statusDescription)
+    {
+        //CSCI-572: The URLs it attempts to fetch s: "URL;status"
+        String[] out = new String[]{webUrl.getURL(), String.valueOf(statusCode)};
+        try {
+            write2csv("fetch", out);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
