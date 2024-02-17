@@ -19,29 +19,42 @@ import java.util.Stack;
  */
 public class CrawlStat {
     private int totalProcessedPages;
+    private int totalFetchedPages;
+    private int totalSuccesses;
+    private int totalFailedOrAborted;
     private long totalLinks;
     private long totalTextSize;
-    private final Stack<String> myStack;
-
+    public final Stack<String> stack_csv1;
+    public final Stack<String> stack_csv2;
+    public final Stack<String> stack_csv3;
     public CrawlStat()
     {
+        this.totalFetchedPages = 0;
         this.totalProcessedPages = 0;
+        this.totalSuccesses = 0;
+        this.totalFailedOrAborted = 0;
         this.totalLinks = 0;
         this.totalTextSize = 0;
-        this.myStack = new Stack<>();
+        this.stack_csv1 = new Stack<>();
+        this.stack_csv2 = new Stack<>();
+        this.stack_csv3 = new Stack<>();
     }
 
-    public void stackPush(String entry) {
-        myStack.push(entry);
+    public void stackPush(Stack<String> stack, String s)
+    {
+        stack.push(s);
     }
 
-    public int stackSize() {
-        return myStack.size();
+    public String stackPop(Stack<String> stack)
+    {
+        return stack.pop();
     }
 
-    public String stackPop() {
-        return myStack.pop();
+    public int stackSize(Stack<String> stack)
+    {
+        return stack.size();
     }
+
 
     public int getTotalProcessedPages() {
         return totalProcessedPages;
@@ -53,6 +66,26 @@ public class CrawlStat {
 
     public void incProcessedPages() {
         this.totalProcessedPages++;
+    }
+
+    public void incTotalSuccess() {
+        this.totalSuccesses++;
+    }
+    public int getTotalSuccess() {
+        return this.totalSuccesses;
+    }
+    public void incTotalFailedOrAborted() {
+        this.totalFailedOrAborted++;
+    }
+
+    public int getTotalFailedOrAborted() {return this.totalFailedOrAborted;}
+
+    public void incFetchedPages() {
+        this.totalFetchedPages++;
+    }
+
+    public int getFetchedPages() {
+        return this.totalFetchedPages;
     }
 
     public long getTotalLinks() {

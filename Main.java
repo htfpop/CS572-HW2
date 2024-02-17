@@ -1,4 +1,5 @@
 import ch.qos.logback.classic.Logger;
+import com.opencsv.CSVWriter;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -6,6 +7,10 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class Main {
@@ -28,7 +33,7 @@ public class Main {
 
         // You can set the maximum number of pages to crawl. The default value is -1 for unlimited number of pages.
         // CSCI-572: should be set to 20,000 to ensure a reasonable execution time for this exercise
-        config.setMaxPagesToFetch(20000);
+        config.setMaxPagesToFetch(1000);
 
         // Should binary data should also be crawled? example: the contents of pdf, or the metadata of images etc
         config.setIncludeBinaryContentInCrawling(true);
@@ -73,6 +78,15 @@ public class Main {
         // Start the crawl. This is a blocking operation, meaning that your code
         // will reach the line after this only when crawling is finished.
         // GO!!!!
+        String[] hdr = new String[]{"URL", "Status"};
+        write2csv("fetch", hdr);
+
+        hdr = new String[]{"URL", "Size (bytes)", "# Outlinks", "content-type"};
+        write2csv("visit", hdr);
+
+        hdr = new String[]{"URL", "Indicator"};
+        write2csv("urls", hdr);
+
         long elapsed = System.nanoTime();
         controller.start(BasicCrawler.class, numberOfCrawlers);
         elapsed = System.nanoTime() - elapsed;
@@ -99,6 +113,28 @@ public class Main {
         System.out.printf("\tTotal Time %d min %d s\n", min,sec);
         System.out.printf("\tTotal s %d\n", elapsed);
 
+        PrintWriter pw = new PrintWriter(new FileWriter("logs\\" + "aggregate.txt"));
+        pw.printf("Aggregated Statistics:\n");
+        pw.printf("\tProcessed Pages: {%d}\r\n", totalProcessedPages);
+        pw.printf("\tTotal Links found: {%d}\r\n", totalLinks);
+        pw.printf("\tTotal Text Size: {%d}\n", totalTextSize);
+        pw.printf("\tTotal Time %d min %d s\n", min,sec);
+        pw.printf("\tTotal s %d\n", elapsed);
+        pw.flush();
+        pw.close();
+    }
+
+    public static void write2csv(String csvType, String[] write) throws IOException {
+        String outfile = switch (csvType) {
+            case "fetch" -> "logs\\fetch_usatoday.csv";
+            case "visit" -> "logs\\visit_usatoday.csv";
+            case "urls" -> "logs\\urls_usatoday.csv";
+            default -> "UNDEFINED.csv";
+        };
+
+        CSVWriter csv = new CSVWriter(new FileWriter(outfile, false));
+        csv.writeNext(write);
+        csv.close();
     }
 
 }// Main
