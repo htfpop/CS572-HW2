@@ -1,0 +1,6 @@
+Aggregated Statistics:
+	Processed Pages: {9754}
+	Total Links found: {2274927}
+	Total Text Size: {113131898}
+	Total Time 135 min 47 s
+	Total s 8147313938700

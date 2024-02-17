@@ -60,3 +60,9 @@ Aggregated Statistics:
 	Total Text Size: {128061045}
 	Total Time 134 min 44 s
 	Total s 8084276239373
+
+
+- [PageFetcher]- Failed: Page Size (1142070) exceeded max-download-size (1048576), at URL: https://www.usatoday.com/money/blueprint/images/uploads/2023/12/11171429/image-35.png
+18:16:52 WARN  [Crawler 16] - [WebCrawler]- Skipping a page which was bigger than max allowed size: https://www.usatoday.com/money/blueprint/images/uploads/2023/12/11171429/image-35.png
+
+03:01:08 WARN  [Crawler 14] - [WebCrawler]- Skipping URL: https://www.usatoday.com/storytelling/qa/grid/world-cup-2022-mens-roster-usa-mexico-canada/, StatusCode: 404, text/html; charset=utf-8, Not Found
