@@ -1,11 +1,32 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Scanner;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class compile {
+    public static void main(String[] args) throws IOException, CsvException {
+        CSVReader reader = new CSVReader(new FileReader("logs/fetch_usatoday.csv"));
 
+        List<String[]> line = reader.readAll();
+        HashMap<String, Integer> hm = new HashMap<>();
+
+        for(int i = 1; i < line.size(); i ++)
+        {
+            String[] l = line.get(i);
+            //System.out.printf("URL %s - Status %d\r\n", l[0], Integer.valueOf(l[1]));
+            if(hm.containsKey(l[0]))
+            {
+                System.out.printf("Found existing key: %s\r\n",l[0]);
+            }
+            hm.put(l[0], Integer.valueOf(l[1]));
+        }
+        System.out.printf("hm size: %d", hm.size());
+
+    }
+    /*
     public static void main(String[] args) throws FileNotFoundException {
         Set<String> set = new HashSet<>();
 
@@ -43,4 +64,5 @@ public class compile {
         System.out.printf("DONE... Set size - %d",set.size());
 
     }
+    */
 }
