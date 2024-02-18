@@ -3,10 +3,34 @@ import com.opencsv.exceptions.CsvException;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class compile {
+    public int fetchAttempted;
+    public int fetchSucceeded;
+    public int fetchFailedAbort;
+    public int totalURLExtracted;
+    public Set<String> uniqueURLExtracted;
+    public Set<String> uniqueURLWithinNews;
+    public Set<String> uniqueURLOutsideNews;
+    HashMap<String,Integer> statusCodes;
+    HashMap<String, Integer> fileSizes;
+    HashMap<String, Integer> contentTypes;
+
+    public compile()
+    {
+        this.fetchAttempted = 0;
+        this.fetchSucceeded = 0;
+        this.fetchFailedAbort = 0;
+        this.totalURLExtracted = 0;
+        this.uniqueURLExtracted = new HashSet<String>();
+        this.uniqueURLWithinNews = new HashSet<String>();
+        this.uniqueURLOutsideNews = new HashSet<String>();
+        this.statusCodes = new HashMap<>();
+        this.fileSizes = new HashMap<>();
+        this.contentTypes = new HashMap<>();
+    }
+
     public static void main(String[] args) throws IOException, CsvException {
         CSVReader reader = new CSVReader(new FileReader("logs/fetch_usatoday.csv"));
 
