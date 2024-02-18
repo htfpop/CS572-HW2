@@ -66,3 +66,10 @@ Aggregated Statistics:
 18:16:52 WARN  [Crawler 16] - [WebCrawler]- Skipping a page which was bigger than max allowed size: https://www.usatoday.com/money/blueprint/images/uploads/2023/12/11171429/image-35.png
 
 03:01:08 WARN  [Crawler 14] - [WebCrawler]- Skipping URL: https://www.usatoday.com/storytelling/qa/grid/world-cup-2022-mens-roster-usa-mexico-canada/, StatusCode: 404, text/html; charset=utf-8, Not Found
+
+
+Decided to use  int fileSize = page.getContentData().length; because
+Q: How to get the size of the downloaded file?
+A: It will be the size of the page. Ex for a n image or pdf, it will be the size of the image or the
+pdf, for the html files, it will be the size of the file. The size should be in bytes (or kb, mb
+etc.). (page.getContentData().length)
