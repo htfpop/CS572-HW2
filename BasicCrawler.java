@@ -11,7 +11,7 @@ import java.util.Set;
 import org.apache.http.Header;
 
 public class BasicCrawler extends WebCrawler {
-    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|css|EXE|GIF|MP3)$");
+    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|css|json|JSON|js|JS|EXE|GIF|MP3)$");
     CrawlStat myCrawlStat;
 
     public BasicCrawler() {
@@ -25,24 +25,29 @@ public class BasicCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-
-        // Ignore the url if it has an extension that matches our defined set
-        if (IMAGE_EXTENSIONS.matcher(href).matches()) {
-            logger.warn(String.format("No visit since pattern matched not allowed - %s",href));
-
-            // CSCI-572: All the URLs (including repeats) that were discovered s = URL;N_OK
-            String[] out = new String[]{url.getURL(), "N_OK"};
-            try {
-                write2csv("urls", out);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            return false;
+        if(href.contains(","))
+        {
+            href = href.replace(',','_');
         }
 
+        // Ignore the url if it has an extension that matches our defined set
+//        if (IMAGE_EXTENSIONS.matcher(href).matches()) {
+//            logger.warn(String.format("No visit since pattern matched not allowed - %s",href));
+//
+//            // CSCI-572: All the URLs (including repeats) that were discovered s = URL;N_OK
+//            String[] out = new String[]{url.getURL(), "N_OK"};
+//            try {
+//                write2csv("urls", out);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//            return false;
+//        }
+
+        String contentType = referringPage.getContentType();
         // Check if valid domain, else skip
-        if(href.startsWith("https://www.usatoday.com") || href.startsWith("http://www.usatoday.com") )
+        if( href.startsWith("https://www.usatoday.com") || href.startsWith("http://www.usatoday.com") )
         {
             // CSCI-572: All the URLs (including repeats) that were discovered s = URL;OK
             String[] out = new String[]{url.getURL(), "OK"};
@@ -51,10 +56,19 @@ public class BasicCrawler extends WebCrawler {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            return true;
+
+            if (IMAGE_EXTENSIONS.matcher(href).matches()) // Check if internal website has pattern listed above
+            {
+                logger.warn(String.format("No visit since pattern matched not allowed - %s",href));
+                return false;
+            }
+
+            // CSCI572: Limit your crawler so it only visits HTML, doc, pdf and different image format URLs and record the meta data for those file types
+            return contentType.matches("text/html(.*)") || contentType.contains("image") ||
+                    contentType.matches("application/pdf") || contentType.contains("doc");
         }
-        else {
-            // CSCI-572: All the URLs (including repeats) that were discovered s = URL;N_OK
+        else // CSCI-572: All the URLs (including repeats) that were discovered s = URL;N_OK
+        {
             String[] out = new String[]{url.getURL(), "N_OK"};
             try {
                 write2csv("urls", out);
@@ -73,10 +87,16 @@ public class BasicCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
         logger.info("Visited: {}", page.getWebURL().getURL());
-        myCrawlStat.incFetchedPages();
 
         int docid = page.getWebURL().getDocid();
         String url = page.getWebURL().getURL();
+
+        //A: Replace the comma with or so that it doesn't throw an error.
+        if(url.contains(","))
+        {
+            url = url.replace(',','_');
+        }
+
         String domain = page.getWebURL().getDomain();
         String path = page.getWebURL().getPath();
         String subDomain = page.getWebURL().getSubDomain();
@@ -100,16 +120,10 @@ public class BasicCrawler extends WebCrawler {
             myCrawlStat.incTotalSuccess();
             if (page.getParseData() instanceof HtmlParseData) {
                 HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-                String text = htmlParseData.getText();
-                String html = htmlParseData.getHtml();
                 Set<WebURL> links = htmlParseData.getOutgoingUrls();
                 myCrawlStat.incTotalLinks(links.size());
 
-//                try {
-//                    myCrawlStat.incTotalTextSize(htmlParseData.getText().getBytes("UTF-8").length);
-//                } catch (UnsupportedEncodingException ignored) {
-//                    // Do nothing
-//                }
+                int fileSize = page.getContentData().length;
 
                 String contentType = page.getContentType();
 
@@ -120,7 +134,7 @@ public class BasicCrawler extends WebCrawler {
                 }
 
                 // CSCI-572: the files it successfully downloads s: "URL;size;links;type"
-                out = new String[]{url, String.valueOf(page.getContentData().length), String.valueOf(links.size()), contentType};
+                out = new String[]{url, String.valueOf(fileSize), String.valueOf(links.size()), contentType};
                 try {
                     write2csv("visit", out);
                 } catch (IOException e) {
@@ -133,8 +147,7 @@ public class BasicCrawler extends WebCrawler {
                 String contentType = page.getContentType();
 
                 // Primary Binary Filter
-                if (contentType.contains("text/html") || contentType.contains("image") ||
-                        contentType.contains("application/pdf") || contentType.contains("doc") )
+                if (contentType.contains("image") || contentType.matches("application/pdf") || contentType.contains("doc") )
                 {
                     int outlinks = page.getParseData().getOutgoingUrls().size();
                     out = new String[]{url, String.valueOf(page.getContentData().length), String.valueOf(outlinks), contentType};
@@ -146,7 +159,7 @@ public class BasicCrawler extends WebCrawler {
                     }
                     myCrawlStat.incProcessedPages();
                 }
-                else
+                else //Unknown application - write to UNDETERMINED.csv
                 {
                     int outlinks = page.getParseData().getOutgoingUrls().size();
                     out = new String[]{url, String.valueOf(page.getContentData().length), String.valueOf(outlinks), contentType};
@@ -157,7 +170,6 @@ public class BasicCrawler extends WebCrawler {
                         throw new RuntimeException(e);
                     }
                 }
-
             }
 
 //            Header[] responseHeaders = page.getFetchResponseHeaders();
@@ -169,7 +181,6 @@ public class BasicCrawler extends WebCrawler {
 //            }
 
         }
-
         System.out.println("\n==========================\n");
     }
 
@@ -179,7 +190,6 @@ public class BasicCrawler extends WebCrawler {
         logger.info("Crawler {} > Fetched Pages: {}", id, myCrawlStat.getFetchedPages());
         logger.info("Crawler {} > Processed Pages: {}", id, myCrawlStat.getTotalProcessedPages());
         logger.info("Crawler {} > Total Links Found: {}", id, myCrawlStat.getTotalLinks());
-        logger.info("Crawler {} > Total Text Size: {}", id, myCrawlStat.getTotalTextSize());
     }
 
     /**
@@ -201,6 +211,7 @@ public class BasicCrawler extends WebCrawler {
         dumpMyData();
     }
 
+    /*
     public void write2File() throws IOException {
         String csv1_text = "Thread"+getMyId()+"_csv1.txt";
         String csv2_text = "Thread"+getMyId()+"_csv2.txt";
@@ -245,20 +256,21 @@ public class BasicCrawler extends WebCrawler {
         pw.flush();
         pw.close();
     }
+    */
 
     public void write2csv(String csvType, String[] write) throws IOException {
         String outfile = switch (csvType) {
-            case "fetch" -> "logs/fetch_usatoday.csv";
-            case "visit" -> "logs/visit_usatoday.csv";
-            case "urls" -> "logs/urls_usatoday.csv";
-            default -> "logs/UNDETERMINED.csv";
+            case "fetch" -> "logs\\fetch_usatoday.csv";
+            case "visit" -> "logs\\visit_usatoday.csv";
+            case "urls" -> "logs\\urls_usatoday.csv";
+            default -> "logs\\UNDETERMINED.csv";
         };
 
         CSVWriter csv = new CSVWriter(new FileWriter(outfile, true));
         csv.writeNext(write);
         csv.close();
     }
-
+/*
     @Override
     protected void onUnexpectedError(String urlStr, int statusCode, String contentType, String description)
     {
@@ -294,17 +306,25 @@ public class BasicCrawler extends WebCrawler {
             myCrawlStat.incTotalFailedOrAborted();
         }
     }
-
+*/
     @Override
     protected void handlePageStatusCode(WebURL webUrl, int statusCode, String statusDescription)
     {
+        String url = webUrl.getURL();
+        // A: Replace the comma with or so that it doesn't throw an error.
+        if(url.contains(","))
+        {
+            url = url.replace(',','_');
+        }
+
         //CSCI-572: The URLs it attempts to fetch s: "URL;status"
-        String[] out = new String[]{webUrl.getURL(), String.valueOf(statusCode)};
+        String[] out = new String[]{url, String.valueOf(statusCode)};
         try {
             write2csv("fetch", out);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        myCrawlStat.incFetchedPages();
     }
 
 
