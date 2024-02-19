@@ -11,7 +11,7 @@ import java.util.Set;
 import org.apache.http.Header;
 
 public class BasicCrawler extends WebCrawler {
-    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|css|json|JSON|js|JS|EXE|GIF|MP3)$");
+    private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|css|json|JSON|woff2|woff|js|JS|EXE|GIF|MP3)$");
     CrawlStat myCrawlStat;
 
     public BasicCrawler() {
@@ -30,27 +30,12 @@ public class BasicCrawler extends WebCrawler {
             href = href.replace(',','_');
         }
 
-        // Ignore the url if it has an extension that matches our defined set
-//        if (IMAGE_EXTENSIONS.matcher(href).matches()) {
-//            logger.warn(String.format("No visit since pattern matched not allowed - %s",href));
-//
-//            // CSCI-572: All the URLs (including repeats) that were discovered s = URL;N_OK
-//            String[] out = new String[]{url.getURL(), "N_OK"};
-//            try {
-//                write2csv("urls", out);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            return false;
-//        }
-
         String contentType = referringPage.getContentType();
         // Check if valid domain, else skip
         if( href.startsWith("https://www.usatoday.com") || href.startsWith("http://www.usatoday.com") )
         {
             // CSCI-572: All the URLs (including repeats) that were discovered s = URL;OK
-            String[] out = new String[]{url.getURL(), "OK"};
+            String[] out = new String[]{href, "OK"};
             try {
                 write2csv("urls", out);
             } catch (IOException e) {
@@ -63,13 +48,19 @@ public class BasicCrawler extends WebCrawler {
                 return false;
             }
 
+            if(contentType.contains(";"))
+                contentType = contentType.split(";")[0];
+
+            if (contentType.contains("font"))
+                return false;
+
             // CSCI572: Limit your crawler so it only visits HTML, doc, pdf and different image format URLs and record the meta data for those file types
-            return contentType.matches("text/html(.*)") || contentType.contains("image") ||
-                    contentType.matches("application/pdf") || contentType.contains("doc");
+            return contentType.contains("text/html") || contentType.contains("image") ||
+                    contentType.contains("pdf") || contentType.contains("doc");
         }
         else // CSCI-572: All the URLs (including repeats) that were discovered s = URL;N_OK
         {
-            String[] out = new String[]{url.getURL(), "N_OK"};
+            String[] out = new String[]{href, "N_OK"};
             try {
                 write2csv("urls", out);
             } catch (IOException e) {
