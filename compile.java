@@ -6,7 +6,7 @@ import java.util.*;
 
 public class compile {
 
-    final static String folder = "logs\\archive6_new\\";
+    final static String folder = "logs\\FINAL\\";
     final static String fetchCsv = "fetch_usatoday.csv";
     final static String urlsCsv = "urls_usatoday.csv";
     final static String visitCsv = "visit_usatoday.csv";
@@ -185,32 +185,33 @@ public class compile {
         reader.close();
 
     }
-    public static void print(compile c)
-    {
-        System.out.println("Name: Christopher K. Leung");
-        System.out.println("USC ID: 2965-7518-69");
-        System.out.println("News site crawled: www.usatoday.com");
-        System.out.printf("Number of threads: %d", c.numThreads);
-        System.out.println();
-        System.out.println();
-        System.out.println("Fetch statistics:");
-        System.out.println("================");
-        System.out.printf("# Fetches attempted: %d\n",c.fetchAttempted);
-        System.out.printf("# Fetches succeeded: %d\n", c.fetchSucceeded);
-        System.out.printf("# Fetches failed or aborted: %d\n", c.fetchFailedAbort);
-        System.out.printf("# Fetches status UNDEF: %d\n", c.status_UNDEF);
-        System.out.println();
-        System.out.println("Outgoing URLs:");
-        System.out.println("==============");
-        System.out.printf("Total URLs extracted: %d\n",c.totalOutlinks); // CSCI-572 # of total URLS is sum(column3) of visit.csv
+    public static void print(compile c) throws IOException {
+        PrintWriter pw = new PrintWriter(new FileWriter("logs\\FINAL\\CrawlReport_usatoday.txt"));
+
+        pw.println("Name: Christopher K. Leung");
+        pw.println("USC ID: 2965-7518-69");
+        pw.println("News site crawled: www.usatoday.com");
+        pw.printf("Number of threads: %d", c.numThreads);
+        pw.println();
+        pw.println();
+        pw.println("Fetch statistics:");
+        pw.println("================");
+        pw.printf("# Fetches attempted: %d\n",c.fetchAttempted);
+        pw.printf("# Fetches succeeded: %d\n", c.fetchSucceeded);
+        pw.printf("# Fetches failed or aborted: %d\n", c.fetchFailedAbort);
+        //System.out.printf("# Fetches status UNDEF: %d\n", c.status_UNDEF);
+        pw.println();
+        pw.println("Outgoing URLs:");
+        pw.println("==============");
+        pw.printf("Total URLs extracted: %d\n",c.totalOutlinks); // CSCI-572 # of total URLS is sum(column3) of visit.csv
         //System.out.printf("Total URLs extracted: %d\n",c.totalURLExtracted);
         //System.out.printf("Total outlinks: %d\n",c.totalOutlinks);
-        System.out.printf("# Unique URLs extracted: %d\n", c.uniqueURLExtracted.size());
-        System.out.printf("# Unique URLs within News Site: %d\n", c.uniqueURLWithinNews.size());
-        System.out.printf("# Unique URLs outside News Site: %d\n", c.uniqueURLOutsideNews.size());
-        System.out.println();
-        System.out.println("Status Codes:");
-        System.out.println("=============");
+        pw.printf("# Unique URLs extracted: %d\n", c.uniqueURLExtracted.size());
+        pw.printf("# Unique URLs within News Site: %d\n", c.uniqueURLWithinNews.size());
+        pw.printf("# Unique URLs outside News Site: %d\n", c.uniqueURLOutsideNews.size());
+        pw.println();
+        pw.println("Status Codes:");
+        pw.println("=============");
 
         Object[] keys = c.statusCodes.keySet().toArray();
         Arrays.sort(keys);
@@ -220,25 +221,27 @@ public class compile {
             int v = c.statusCodes.get(k);
 
             String prefix = determinePrefix(k);
-            System.out.printf("%s %d\n",prefix, v);
+            pw.printf("%s %d\n",prefix, v);
         }
-        System.out.println();
-        System.out.println("File Sizes:");
-        System.out.println("===========");
-        System.out.printf("< 1KB: %d\n", c.fileSizes.get("A"));
-        System.out.printf("1KB ~ <10KB: %d\n", c.fileSizes.get("B"));
-        System.out.printf("10KB ~ <100KB: %d\n", c.fileSizes.get("C"));
-        System.out.printf("100KB ~ <1MB: %d\n", c.fileSizes.get("D"));
-        System.out.printf(">= 1MB: %d\n", c.fileSizes.get("E"));
-        System.out.println();
-        System.out.println("Content Types:");
-        System.out.println("==============");
+        pw.println();
+        pw.println("File Sizes:");
+        pw.println("===========");
+        pw.printf("< 1KB: %d\n", c.fileSizes.get("A"));
+        pw.printf("1KB ~ <10KB: %d\n", c.fileSizes.get("B"));
+        pw.printf("10KB ~ <100KB: %d\n", c.fileSizes.get("C"));
+        pw.printf("100KB ~ <1MB: %d\n", c.fileSizes.get("D"));
+        pw.printf(">= 1MB: %d\n", c.fileSizes.get("E"));
+        pw.println();
+        pw.println("Content Types:");
+        pw.println("==============");
         Object[] types = c.contentTypes.keySet().toArray();
         Arrays.sort(types);
         for(Object k: types)
         {
-            System.out.printf("%s %d\n",k, c.contentTypes.get(k));
+            pw.printf("%s %d\n",k, c.contentTypes.get(k));
         }
+
+        pw.close();
     }
 
     public static String determinePrefix(int k)
