@@ -12,7 +12,7 @@ import org.apache.http.Header;
 
 public class BasicCrawler extends WebCrawler {
     private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|css|json|JSON|woff2|woff|js|JS|EXE|GIF|MP3)$");
-    private static final Pattern ADDITIONAL_EXTENSION = Pattern.compile(".*.(css\\?|woff\\?|woff2\\?|woff1\\?)");
+    private static final Pattern ADDITIONAL_EXTENSION = Pattern.compile(".*.(css\\?|woff\\?|woff2\\?|woff1\\?|css|woff|woff2|woff1)");
     CrawlStat myCrawlStat;
 
     public BasicCrawler() {
@@ -54,7 +54,7 @@ public class BasicCrawler extends WebCrawler {
                 throw new RuntimeException(e);
             }
 
-            if (IMAGE_EXTENSIONS.matcher(href).matches() && ADDITIONAL_EXTENSION.matcher(href).matches()) // Check if internal website has pattern listed above
+            if (IMAGE_EXTENSIONS.matcher(href).matches() || ADDITIONAL_EXTENSION.matcher(href).matches()) // Check if internal website has pattern listed above
             {
                 logger.warn(String.format("No visit since pattern matched not allowed - %s",href));
                 return false;
