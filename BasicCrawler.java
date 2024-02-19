@@ -12,12 +12,24 @@ import org.apache.http.Header;
 
 public class BasicCrawler extends WebCrawler {
     private static final Pattern IMAGE_EXTENSIONS = Pattern.compile(".*\\.(bmp|gif|CSS|css|json|JSON|woff2|woff|js|JS|EXE|GIF|MP3)$");
+    private static final Pattern ADDITIONAL_EXTENSION = Pattern.compile(".*.(css\\?|woff\\?|woff2\\?|woff1\\?)");
     CrawlStat myCrawlStat;
 
     public BasicCrawler() {
         myCrawlStat = new CrawlStat();
     }
 
+//    @Override
+//    protected WebURL handleUrlBeforeProcess(WebURL curURL)
+//    {
+//        String url = curURL.getURL();
+//        if(url.contains("?"))
+//            url = url.split("\\?")[0];
+//
+//        curURL.setURL(url);
+//
+//        return curURL;
+//    }
     /**
      * You should implement this function to specify whether the given url
      * should be crawled or not (based on your crawling logic).
@@ -42,14 +54,11 @@ public class BasicCrawler extends WebCrawler {
                 throw new RuntimeException(e);
             }
 
-            if (IMAGE_EXTENSIONS.matcher(href).matches()) // Check if internal website has pattern listed above
+            if (IMAGE_EXTENSIONS.matcher(href).matches() && ADDITIONAL_EXTENSION.matcher(href).matches()) // Check if internal website has pattern listed above
             {
                 logger.warn(String.format("No visit since pattern matched not allowed - %s",href));
                 return false;
             }
-
-            if(contentType.contains(";"))
-                contentType = contentType.split(";")[0];
 
             if (contentType.contains("font"))
                 return false;
